@@ -790,11 +790,7 @@ dirtomon(int dir)
 void
 drawbar(Monitor *m)
 {
-<<<<<<< HEAD
-	int x, w, tw = 0;
-=======
 	int x, w, sw = 0, stw = 0;
->>>>>>> systray
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
@@ -806,13 +802,8 @@ drawbar(Monitor *m)
 	/* draw status first so it can be overdrawn by tags later */
 	if (m == selmon) { /* status is only drawn on selected monitor */
 		drw_setscheme(drw, scheme[SchemeNorm]);
-<<<<<<< HEAD
-		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
-		drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
-=======
 		sw = TEXTW(stext) - lrpad / 2 + 2; /* 2px right padding */
 		drw_text(drw, m->ww - sw - stw, 0, sw, bh, lrpad / 2 - 2, stext, 0);
->>>>>>> systray
 	}
 
 	resizebarwin(m);
@@ -836,11 +827,7 @@ drawbar(Monitor *m)
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
-<<<<<<< HEAD
-	if ((w = m->ww - tw - x) > bh) {
-=======
 	if ((w = m->ww - sw - stw - x) > bh) {
->>>>>>> systray
 		if (m->sel) {
 			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
 			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
