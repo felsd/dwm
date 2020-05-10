@@ -1,25 +1,31 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int gappx     = 3;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
-static const int showsystray        = 1;     /* 0 means no systray */
-static const char *fonts[]          = { "monospace:size=12" };
-static const char dmenufont[]       = "monospace:size=12";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
-static const char *colors[][3]      = {
+static const int showsystray         = 1;     /* 0 means no systray */
+static const char *fonts[]           = { "monospace:size=12" };
+static const char dmenufont[]        = "monospace:size=12";
+static const char col_gray1[]        = "#222222";
+static const char col_gray2[]        = "#444444";
+static const char col_gray3[]        = "#bbbbbb";
+static const char col_gray4[]        = "#eeeeee";
+static const char col_cyan[]         = "#005577";
+static const char col_tango_green[]  = "#8ae234";
+static const char col_tango_blue[]   = "#729fcf";
+static const char col_tango_blue2[]  = "#204a87";
+static const char col_tango_red[]    = "#ef2929";
+static const char col_tango_orange[] = "#fcaf3e";
+static const char *colors[][3]       = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeSel]  = { col_gray4, col_cyan,  col_tango_blue2  },
 	[SchemeStatus]  = { col_gray3, col_gray1,  "#000000"  }, // Statusbar right {text,background,not used but cannot be empty}
 	[SchemeTagsSel]  = { col_gray4, col_cyan,  "#000000"  }, // Tagbar left selected {text,background,not used but cannot be empty}
   [SchemeTagsNorm]  = { col_gray3, col_gray1,  "#000000"  }, // Tagbar left unselected {text,background,not used but cannot be empty}
@@ -43,7 +49,7 @@ static const Rule rules[] = {
 /* layout(s) */
 static const float mfact      = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster      = 1;    /* number of clients in master area */
-static const int resizehints  = 1;    /* 1 means respect size hints in tiled resizals */
+static const int resizehints  = 0;    /* 1 means respect size hints in tiled resizals */
 static const int attachbottom = 1;    /* 1 means attach at the bottom */
 
 static const Layout layouts[] = {
