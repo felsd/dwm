@@ -2,3 +2,4 @@ dwm-systray-6.2.diff
 dwm-autostart-20161205-bb3bd6f.diff
 dwm-attachbottom-6.2.diff
 dwm-colorbar-6.2.diff
+dwm-status2d-6.2.diff
