@@ -1564,8 +1564,6 @@ removesystrayicon(Client *i)
 	if (ii)
 		*ii = i->next;
 	free(i);
-  // TODO this is a ugly fix for slstatus behaviour
-  system("xsetroot -name \"\"");
   updatestatus();
 }
 
