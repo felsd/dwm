@@ -77,6 +77,8 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *kpmenucmd[] = { "kpmenu", NULL };
 static const char *termcmd[]  = { "urxvtc", NULL };
 static const char *screencapcmd[] = { "flameshot", "gui", NULL };
+static const char *brightdwncmd[] = { "xbacklight", "-dec", "10", NULL };
+static const char *brightupcmd[] = { "xbacklight", "-inc", "10", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -84,6 +86,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_o,      spawn,          {.v = kpmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_Print,  spawn,          {.v = screencapcmd } },
+	{ MODKEY,                       XK_F5,     spawn,          {.v = brightdwncmd } },
+	{ MODKEY,                       XK_F6,     spawn,          {.v = brightupcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
