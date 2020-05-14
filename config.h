@@ -10,7 +10,7 @@ static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows sel
 static const unsigned int systrayspacing = 16;  /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray         = 1;     /* 0 means no systray */
-static const char *fonts[]           = { "monospace:size=12", "pixelsize=12:antialias=true:autohint=true" };
+static const char *fonts[]           = { "monospace:size=12", "JoyPixels:pixelsize=12:antialias=true:autohint=true" };
 static const char dmenufont[]        = "monospace:size=12";
 static const char col_black[]        = "#000000";
 static const char col_gray1[]        = "#222222";
@@ -129,7 +129,9 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+  { ClkStatusText,        0,              Button1,        sigdwmblocks,   {.i = 1} },
+  { ClkStatusText,        0,              Button2,        sigdwmblocks,   {.i = 2} },
+  { ClkStatusText,        0,              Button3,        sigdwmblocks,   {.i = 3} },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
