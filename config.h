@@ -10,8 +10,8 @@ static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows sel
 static const unsigned int systrayspacing = 16;  /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray         = 1;     /* 0 means no systray */
-static const char *fonts[]           = { "monospace:size=12", "JoyPixels:pixelsize=12:antialias=true:autohint=true" };
-static const char dmenufont[]        = "monospace:size=12";
+static const char *fonts[]           = { "Source Code Pro Medium:size=12", "JoyPixels:pixelsize=12:antialias=true:autohint=true" };
+static const char dmenufont[]        = "Source Code Pro Medium:size=12:antialias=true";
 static const char col_black[]        = "#000000";
 static const char col_gray1[]        = "#222222";
 static const char col_gray2[]        = "#444444";
@@ -42,9 +42,10 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/* class         instance    title                tags mask     isfloating   monitor */
+    { "Gimp",        NULL,       NULL,                0,            1,           -1 },
+    { "Firefox",     NULL,       NULL,                1 << 8,       0,           -1 },
+    { NULL,          NULL,       "floatingwin",       0,            1,           -1 },
 };
 
 /* layout(s) */
