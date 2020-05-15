@@ -503,24 +503,12 @@ buttonpress(XEvent *e)
 		do
 			x += TEXTW(tags[i]);
 		while (ev->x >= x && ++i < LENGTH(tags));
-    /* char cmd[128]; */
-    /* sprintf(cmd, "notify-send '%s'", stext); */
-    /* system(cmd); */
-
-    FILE *fp;
-
-    fp = fopen("/tmp/test.txt", "w+");
-    fprintf(fp, "%s\n", stext);
-    fclose(fp);
 
 		if (i < LENGTH(tags)) {
 			click = ClkTagBar;
 			arg.ui = 1 << i;
 		} else if (ev->x < x + blw) {
 			click = ClkLtSymbol;
-    // TODO
-		/* else if (ev->x > selmon->ww - TEXTW(stext) - getsystraywidth()) */
-    /* else if (ev->x > (x = selmon->ww - TEXTW(stext) + lrpad - getsystraywidth())) { */ // after patch
     } else if (ev->x > (x = selmon->ww - TEXTW(stext) + lrpad - getsystraywidth())) {
 			click = ClkStatusText;
 
