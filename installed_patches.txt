@@ -5,3 +5,4 @@ dwm-colorbar-6.2.diff
 dwm-status2d-6.2.diff
 dwm-uselessgap-6.2.diff
 dwm-pertag-6.2.diff
+dwm-statuscmd-signal-6.2.diff
