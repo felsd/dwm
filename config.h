@@ -7,11 +7,14 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int minwsz    = 20;       /* Minimal heigt of a client for smfact */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-static const unsigned int systrayspacing = 16;  /* systray spacing */
-static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
-static const int showsystray         = 1;     /* 0 means no systray */
-static const char *fonts[]           = { "Source Code Pro Medium:size=12", "Siji:size=14", "JoyPixels:pixelsize=12:antialias=true:autohint=true" };
+static const char *fonts[]           = { 
+    "Source Code Pro Medium:size=12",
+    "Font Awesome 5 Free:size=10.5",
+    "Font Awesome 5 Free Regular:size=10.5",
+    "Font Awesome 5 Free Solid:size=10.5",
+    "Font Awesome 5 Brands:size=13",
+    /* "JoyPixels:pixelsize=12:antialias=true:autohint=true" */
+};
 /* static const char *fonts[]           = { "-wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1", "Source Code Pro Medium:size=12", "JoyPixels:pixelsize=12:antialias=true:autohint=true" }; */
 /* static const char *fonts[]           = { "Source Code Pro Medium:size=12", "-wuncon-siji-medium-r-normal--17-120-100-100-c-190-iso10646-1", "JoyPixels:pixelsize=12:antialias=true:autohint=true" }; */
 static const char dmenufont[]        = "Source Code Pro Medium:size=12:antialias=true";
