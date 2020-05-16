@@ -11,7 +11,9 @@ static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows sel
 static const unsigned int systrayspacing = 16;  /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray         = 1;     /* 0 means no systray */
-static const char *fonts[]           = { "Source Code Pro Medium:size=12", "JoyPixels:pixelsize=12:antialias=true:autohint=true" };
+static const char *fonts[]           = { "Source Code Pro Medium:size=12", "Siji:size=14", "JoyPixels:pixelsize=12:antialias=true:autohint=true" };
+/* static const char *fonts[]           = { "-wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1", "Source Code Pro Medium:size=12", "JoyPixels:pixelsize=12:antialias=true:autohint=true" }; */
+/* static const char *fonts[]           = { "Source Code Pro Medium:size=12", "-wuncon-siji-medium-r-normal--17-120-100-100-c-190-iso10646-1", "JoyPixels:pixelsize=12:antialias=true:autohint=true" }; */
 static const char dmenufont[]        = "Source Code Pro Medium:size=12:antialias=true";
 static const char col_black[]        = "#000000";
 static const char col_gray1[]        = "#222222";
@@ -99,8 +101,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_d,       incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,       setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,       setmfact,       {.f = +0.05} },
-  { MODKEY|ShiftMask,             XK_h,      setsmfact,      {.f = +0.05} },
-  { MODKEY|ShiftMask,             XK_l,      setsmfact,      {.f = -0.05} },
+    { MODKEY|ShiftMask,             XK_k,       setsmfact,      {.f = +0.05} },
+    { MODKEY|ShiftMask,             XK_j,       setsmfact,      {.f = -0.05} },
 	{ MODKEY,                       XK_Return,  zoom,           {0} },
 	{ MODKEY,                       XK_Tab,     view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,       killclient,     {0} },
