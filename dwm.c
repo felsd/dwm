@@ -206,6 +206,7 @@ static Atom getatomprop(Client *c, Atom prop);
 static int getrootptr(int *x, int *y);
 static long getstate(Window w);
 static unsigned int getsystraywidth();
+static unsigned int getstatuswidth();
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
 static void grabbuttons(Client *c, int focused);
 static void grabkeys(void);
@@ -512,7 +513,7 @@ buttonpress(XEvent *e)
 			arg.ui = 1 << i;
 		} else if (ev->x < x + blw) {
 			click = ClkLtSymbol;
-    } else if (ev->x > (x = selmon->ww - TEXTW(stext) + lrpad - getsystraywidth())) {
+    } else if (ev->x > (x = selmon->ww - getstatuswidth(stext) + lrpad - getsystraywidth())) {
 			click = ClkStatusText;
 
       char *text = rawstext;
@@ -523,7 +524,7 @@ buttonpress(XEvent *e)
       	if ((unsigned char)text[i] < ' ') {
       		ch = text[i];
       		text[i] = '\0';
-      		x += TEXTW(text) - lrpad;
+      		x += getstatuswidth(text) - getsystraywidth() + 2;
       		text[i] = ch;
       		text += i+1;
       		i = -1;
@@ -1218,6 +1219,52 @@ getsystraywidth()
 	if(showsystray)
 		for(i = systray->icons; i; w += i->w + systrayspacing, i = i->next) ;
 	return w ? w + systrayspacing : 1;
+}
+
+unsigned int
+getstatuswidth(char * stext)
+{
+	unsigned int w = 0;
+  int i, len;
+	short isCode = 0;
+	char *text;
+	char *p;
+
+	len = strlen(stext) + 1 ;
+	if (!(text = (char*) malloc(sizeof(char)*len)))
+		die("malloc");
+	p = text;
+	memcpy(text, stext, len);
+
+	/* compute width of the status text */
+	w = 0;
+	i = -1;
+	while (stext[++i]) {
+		if (text[i] == '^') {
+			if (!isCode) {
+				isCode = 1;
+				text[i] = '\0';
+				w += TEXTW(text) - lrpad;
+				text[i] = '^';
+				if (text[++i] == 'f')
+					w += atoi(text + ++i);
+			} else {
+				isCode = 0;
+				text = text + i + 1;
+				i = -1;
+			}
+		}
+	}
+  // add systray width
+  w += getsystraywidth();
+	if (!isCode)
+		w += TEXTW(text) - lrpad;
+	else
+		isCode = 0;
+	text = p;
+
+	w += 2; /* 1px padding on both sides */
+  return w;
 }
 
 int
