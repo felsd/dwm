@@ -8,16 +8,16 @@ static const unsigned int minwsz    = 20;       /* Minimal heigt of a client for
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]           = { 
-    "Source Code Pro Medium:size=12",
-    "Font Awesome 5 Free:size=10.5",
-    "Font Awesome 5 Free Regular:size=10.5",
-    "Font Awesome 5 Free Solid:size=10.5",
+    "Source Code Pro Medium:size=10.5",
+    "Font Awesome 5 Free:size=8.5",
+    "Font Awesome 5 Free Regular:size=8.5",
+    "Font Awesome 5 Free Solid:size=8.5",
     "Font Awesome 5 Brands:size=13",
     /* "JoyPixels:pixelsize=12:antialias=true:autohint=true" */
 };
 /* static const char *fonts[]           = { "-wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1", "Source Code Pro Medium:size=12", "JoyPixels:pixelsize=12:antialias=true:autohint=true" }; */
 /* static const char *fonts[]           = { "Source Code Pro Medium:size=12", "-wuncon-siji-medium-r-normal--17-120-100-100-c-190-iso10646-1", "JoyPixels:pixelsize=12:antialias=true:autohint=true" }; */
-static const char dmenufont[]        = "Source Code Pro Medium:size=12:antialias=true";
+static const char dmenufont[]        = "Source Code Pro Medium:size=10.5:antialias=true";
 static const char col_black[]        = "#000000";
 static const char col_gray1[]        = "#222222";
 static const char col_gray2[]        = "#444444";
