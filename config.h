@@ -67,11 +67,13 @@ static const int nmaster      = 1;    /* number of clients in master area */
 static const int resizehints  = 0;    /* 1 means respect size hints in tiled resizals */
 static const int attachbottom = 1;    /* 1 means attach at the bottom */
 
+#include "layouts.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+  { "HHH",      grid },
 };
 
 /* key definitions */
@@ -96,7 +98,6 @@ static const char *brightdwncmd[] = { "xbacklight", "-dec", "10", NULL };
 static const char *brightupcmd[] = { "xbacklight", "-inc", "10", NULL };
 static const char *chromiumcmd[] = { "chromium", NULL };
 static const char *rangercmd[] = { "urxvtc", "-e", "/bin/bash", "-c", "ranger ~", NULL };
-static const char *galccmd[] = { "galculator", NULL };
 static const char *quitcmd[] = { "prompt_quit", NULL };
 
 /* tip: run xev to find out keysyms */
@@ -106,12 +107,11 @@ static Key keys[] = {
 	{ MODKEY,                       XK_o,       spawn,          {.v = kpmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return,  spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_Print,   spawn,          {.v = screencapcmd } },
-    { MODKEY|ShiftMask,             XK_Print,   spawn,          {.v = screenreccmd } },
+  { MODKEY|ShiftMask,             XK_Print,   spawn,          {.v = screenreccmd } },
 	{ 0,                            0x1008ff03, spawn,          {.v = brightdwncmd } },
 	{ 0,                            0x1008ff02, spawn,          {.v = brightupcmd } },
 	{ MODKEY,                       XK_c,       spawn,          {.v = chromiumcmd } },
 	{ MODKEY,                       XK_r,       spawn,          {.v = rangercmd } },
-	{ MODKEY,                       XK_g,       spawn,          {.v = galccmd } },
 	{ MODKEY|ShiftMask,             XK_q,       spawn,          {.v = quitcmd } },
 	{ MODKEY,                       XK_b,       togglebar,      {0} },
 	{ MODKEY,                       XK_j,       focusstack,     {.i = +1 } },
@@ -120,14 +120,15 @@ static Key keys[] = {
 	{ MODKEY,                       XK_d,       incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,       setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,       setmfact,       {.f = +0.05} },
-    { MODKEY|ShiftMask,             XK_k,       setsmfact,      {.f = +0.05} },
-    { MODKEY|ShiftMask,             XK_j,       setsmfact,      {.f = -0.05} },
+  { MODKEY|ShiftMask,             XK_k,       setsmfact,      {.f = +0.05} },
+  { MODKEY|ShiftMask,             XK_j,       setsmfact,      {.f = -0.05} },
 	{ MODKEY,                       XK_Return,  zoom,           {0} },
 	{ MODKEY,                       XK_Tab,     view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,       killclient,     {0} },
 	{ MODKEY,                       XK_t,       setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,       setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,       setlayout,      {.v = &layouts[2]} },
+  { MODKEY,                       XK_g,       setlayout,      {.v = &layouts[3]} },
 	{ MODKEY,                       XK_space,   setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,   togglefloating, {0} },
 	{ MODKEY,                       XK_0,       view,           {.ui = ~0 } },

@@ -5,3 +5,4 @@ dwm-uselessgap-6.2.diff
 dwm-pertag-6.2.diff
 dwm-statuscmd-signal-6.2.diff
 dwm-6.0-smfact.diff
+dwm-gridmode-20170909-ceac8c9.diff
