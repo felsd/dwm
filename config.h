@@ -8,16 +8,21 @@ static const unsigned int minwsz    = 20;       /* Minimal heigt of a client for
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]           = { 
-    "Source Code Pro Medium:size=10.5",
-    "Font Awesome 5 Free:size=8.5",
-    "Font Awesome 5 Free Regular:size=8.5",
-    "Font Awesome 5 Free Solid:size=8.5",
-    "Font Awesome 5 Brands:size=13",
+    // "Source Code Pro Medium:size=10.5",
+    "Wuncon Siji:pixelsize=17",
+    "Misc Tamsyn:pixelsize=17",
+    // "-*-tamsyn-medium-r-*-*-20-*-*-*-*-*-*-*",
+    // "Font Awesome 5 Free:size=8",
+    // "Font Awesome 5 Free Regular:size=8",
+    // "Font Awesome 5 Free Solid:size=8",
+    // "Font Awesome 5 Brands:size=13",
     /* "JoyPixels:pixelsize=12:antialias=true:autohint=true" */
 };
 /* static const char *fonts[]           = { "-wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1", "Source Code Pro Medium:size=12", "JoyPixels:pixelsize=12:antialias=true:autohint=true" }; */
 /* static const char *fonts[]           = { "Source Code Pro Medium:size=12", "-wuncon-siji-medium-r-normal--17-120-100-100-c-190-iso10646-1", "JoyPixels:pixelsize=12:antialias=true:autohint=true" }; */
-static const char dmenufont[]        = "Source Code Pro Medium:size=10.5:antialias=true";
+
+// static const char dmenufont[]        = "Source Code Pro Medium:size=10.5:antialias=true";
+static const char dmenufont[]        = "Misc Tamsyn:pixelsize=17";
 static const char col_black[]        = "#000000";
 static const char col_gray1[]        = "#222222";
 static const char col_gray2[]        = "#444444";
@@ -52,6 +57,7 @@ static const Rule rules[] = {
     { "Gimp",        NULL,       NULL,                0,            1,           -1 },
     { "Firefox",     NULL,       NULL,                1 << 8,       0,           -1 },
     { NULL,          NULL,       "floatingwin",       0,            1,           -1 },
+    { "galculator",  NULL,       NULL,                0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -88,6 +94,10 @@ static const char *screencapcmd[] = { "flameshot", "gui", NULL };
 static const char *screenreccmd[] = { "kazam", NULL };
 static const char *brightdwncmd[] = { "xbacklight", "-dec", "10", NULL };
 static const char *brightupcmd[] = { "xbacklight", "-inc", "10", NULL };
+static const char *chromiumcmd[] = { "chromium", NULL };
+static const char *rangercmd[] = { "urxvtc", "-e", "/bin/bash", "-c", "ranger ~", NULL };
+static const char *galccmd[] = { "galculator", NULL };
+static const char *quitcmd[] = { "prompt_quit", NULL };
 
 /* tip: run xev to find out keysyms */
 static Key keys[] = {
@@ -99,6 +109,10 @@ static Key keys[] = {
     { MODKEY|ShiftMask,             XK_Print,   spawn,          {.v = screenreccmd } },
 	{ 0,                            0x1008ff03, spawn,          {.v = brightdwncmd } },
 	{ 0,                            0x1008ff02, spawn,          {.v = brightupcmd } },
+	{ MODKEY,                       XK_c,       spawn,          {.v = chromiumcmd } },
+	{ MODKEY,                       XK_r,       spawn,          {.v = rangercmd } },
+	{ MODKEY,                       XK_g,       spawn,          {.v = galccmd } },
+	{ MODKEY|ShiftMask,             XK_q,       spawn,          {.v = quitcmd } },
 	{ MODKEY,                       XK_b,       togglebar,      {0} },
 	{ MODKEY,                       XK_j,       focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,       focusstack,     {.i = -1 } },
@@ -131,7 +145,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                       6)
 	TAGKEYS(                        XK_8,                       7)
 	TAGKEYS(                        XK_9,                       8)
-	{ MODKEY|ShiftMask,             XK_q,       quit,           {0} },
+	// { MODKEY|ShiftMask,             XK_q,       quit,           {0} },
 };
 
 /* button definitions */
