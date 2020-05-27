@@ -8,11 +8,11 @@ static const unsigned int minwsz    = 20;       /* Minimal heigt of a client for
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int center_title       = 0;
-static const char *fonts[]          = { 
+static const int hide_vacant_tags   = 1;
+static const char *fonts[]          = {
     // "Source Code Pro Medium:size=10.5",
     "Wuncon Siji:pixelsize=17",
     "Misc Tamsyn:pixelsize=17",
-    // "-*-tamsyn-medium-r-*-*-20-*-*-*-*-*-*-*",
     // "Font Awesome 5 Free:size=8",
     // "Font Awesome 5 Free Regular:size=8",
     // "Font Awesome 5 Free Solid:size=8",
