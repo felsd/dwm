@@ -9,3 +9,4 @@ dwm-gridmode-20170909-ceac8c9.diff
 dwm-centeredwindowname-20180909-6.2.diff
 dwm-hide_vacant_tags-6.2.diff
 dwm-push_no_master-6.2.diff
+dwm-focusonnetactive-6.2.diff

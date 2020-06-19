@@ -9,6 +9,7 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int center_title       = 0;
 static const int hide_vacant_tags   = 1;
+static const int focusonnetactive   = 1;
 static const char *fonts[]          = {
     // "Source Code Pro Medium:size=10.5",
     "Wuncon Siji:pixelsize=17",
