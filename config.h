@@ -11,18 +11,10 @@ static const int center_title       = 0;
 static const int hide_vacant_tags   = 1;
 static const int focusonnetactive   = 1;
 static const char *fonts[]          = {
-    // "Source Code Pro Medium:size=10.5",
     "Wuncon Siji:pixelsize=17",
     "Misc Tamsyn:pixelsize=17",
-    // "Font Awesome 5 Free:size=8",
-    // "Font Awesome 5 Free Regular:size=8",
-    // "Font Awesome 5 Free Solid:size=8",
-    // "Font Awesome 5 Brands:size=13",
-    /* "JoyPixels:pixelsize=12:antialias=true:autohint=true" */
 };
 
-// static const char dmenufont[]        = "Source Code Pro Medium:size=10.5:antialias=true";
-// static const char dmenufont[]        = "$DMENU_FONT";
 static const char dmenufont[]        = "Misc Tamsyn:pixelsize=17";
 static const char col_black[]        = "#000000";
 static const char col_gray1[]        = "#222222";
@@ -46,6 +38,20 @@ static const char *colors[][3]       = {
 	[SchemeInfoNorm]  = { col_gray3, col_black,  "#000000"  }, // infobar middle  unselected {text,background,not used but cannot be empty}
 };
 
+typedef struct {
+	const char *name;
+	const void *cmd;
+} Sp;
+const char *spcmd1[] = {"urxvtc", "-T", "spterm", "-g", "120x34", "-bg", "[80]#000000", NULL};
+const char *spcmd2[] = {"urxvtc", "-T", "spfm", "-g", "144x41", "-e", "ranger", NULL };
+const char *spcmd3[] = {"keepassxc", NULL };
+static Sp scratchpads[] = {
+	/* name          cmd  */
+	{"spterm",      spcmd1},
+	{"spranger",    spcmd2},
+	{"keepassxc",   spcmd3},
+};
+
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
@@ -54,11 +60,14 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class         instance    title                tags mask     isfloating   monitor */
-    { "Gimp",        NULL,       NULL,                0,            1,           -1 },
-    { "Firefox",     NULL,       NULL,                1 << 8,       0,           -1 },
-    { NULL,          NULL,       "floatingwin",       0,            1,           -1 },
-    { "galculator",  NULL,       NULL,                0,            1,           -1 },
+	/* class         	   instance    	title                tags mask      isfloating   monitor */
+    { "Gimp",          NULL,        NULL,                0,             1,           -1 },
+    { "Firefox",       NULL,        NULL,                1 << 8,        0,           -1 },
+    { NULL,            NULL,        "floatingwin",       0,             1,           -1 },
+    { "galculator",    NULL,        NULL,                0,           	1,           -1 },
+	  { NULL,				     NULL,	      "spterm",		         SPTAG(0),			1,		    	 -1 },
+	  { NULL,		         NULL,	      "spfm",		           SPTAG(1),			1,			     -1 },
+	  { NULL,		         "keepassxc", NULL,	               SPTAG(2),		  0,			     -1 },
 };
 
 /* layout(s) */
@@ -93,8 +102,6 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *kpmenucmd[] = { "kpmenu", NULL };
 static const char *termcmd[]  = { "urxvtc", NULL };
-static const char scratchpadname[] = "scratchpad";
-static const char *scratchpadcmd[] = { "urxvtc", "-T", scratchpadname, "-g", "120x34", "-bg", "[80]#000000", NULL };
 static const char *screencapcmd[] = { "flameshot", "gui", NULL };
 static const char *screenreccmd[] = { "kazam", NULL };
 static const char *brightdwncmd[] = { "xbacklight", "-dec", "10", NULL };
@@ -107,7 +114,9 @@ static Key keys[] = {
 	{ MODKEY,                       XK_p,       spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_o,       spawn,          {.v = kpmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return,  spawn,          {.v = termcmd } },
-	{ MODKEY|ShiftMask,             XK_s,       togglescratch,  {.v = scratchpadcmd } },
+	{ MODKEY|ShiftMask,            	XK_s,  	    togglescratch,  {.ui = 0 } },
+	{ MODKEY|ShiftMask,            	XK_e,       togglescratch,  {.ui = 1 } },
+	{ MODKEY|ShiftMask,            	XK_k,	      togglescratch,  {.ui = 2 } },
 	{ MODKEY,                       XK_Print,   spawn,          {.v = screencapcmd } },
 	{ MODKEY|ShiftMask,             XK_Print,   spawn,          {.v = screenreccmd } },
 	{ 0,                            0x1008ff03, spawn,          {.v = brightdwncmd } },
