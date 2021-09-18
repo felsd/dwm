@@ -11,7 +11,7 @@ static const int center_title       = 0;
 static const int hide_vacant_tags   = 1;
 static const int focusonnetactive   = 1;
 static const char *fonts[]          = {
-    "Wuncon Siji:pixelsize=17",
+    "Siji:pixelsize=17",
     "Misc Tamsyn:pixelsize=17",
 };
 
