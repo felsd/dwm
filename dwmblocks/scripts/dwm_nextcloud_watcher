@@ -1,0 +1,78 @@
+#!/usr/bin/python
+import os
+import subprocess
+import time
+from pathlib import Path
+
+import dbus
+import dbus.mainloop.glib
+from gi.repository import GLib
+
+current_state = None
+STATE_INITIAL = "initial"
+STATE_DISCONNECTED = "disconnected"
+STATE_CONNECTED = "connected"
+STATE_SYNCING = "syncing"
+
+
+def update_state(new_state, msg=None):
+    global current_state
+    if new_state != current_state:
+        # notification if disconnected
+        if new_state == STATE_DISCONNECTED:
+            subprocess.call(["notify-send", "-i", "Nextcloud", "Nextcloud", msg])
+        # notification on reconnect
+        if new_state == STATE_CONNECTED and current_state == STATE_DISCONNECTED:
+            subprocess.call(
+                [
+                    "notify-send",
+                    "-i",
+                    "Nextcloud",
+                    "Nextcloud",
+                    "Connection established",
+                ]
+            )
+        current_state = new_state
+        # write current status and notify dwmblocks
+        with open(
+            os.path.join(os.getenv("HOME"), ".dwm", "nextcloud_status.txt"), "w"
+        ) as f:
+            f.write(current_state)
+        subprocess.call(["pkill", "-RTMIN+9", "dwmblocks"])
+
+
+def nc_signal_handler(*args, **kwargs):
+    for arg in args:
+        if isinstance(arg, dbus.Dictionary) and "StatusDetails" in arg:
+            status = arg["StatusDetails"]
+            if "Connected -" in status:
+                if "Syncing" in status or "Checking for changes" in status:
+                    update_state(STATE_SYNCING)
+                    return
+                elif "Success" in status:
+                    update_state(STATE_CONNECTED)
+                    return
+            update_state(STATE_DISCONNECTED, status)
+
+
+if __name__ == "__main__":
+    update_state(STATE_INITIAL)
+    # wait until Xserver is certainly up
+    time.sleep(10)
+    # initialize dbus
+    dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+    bus = dbus.SessionBus()
+    nc_service = bus.get_object(
+        "com.nextcloudgmbh.Nextcloud", "/com/nextcloudgmbh/Nextcloud/Provider",
+    )
+    bus.add_signal_receiver(
+        nc_signal_handler,
+        dbus_interface="org.freedesktop.DBus.Properties",
+        path_keyword="nextcloud",
+    )
+    # touch ~/nextcloud/.dwm_nextcloud_watcher to force sync
+    status_file = os.path.join(os.getenv("HOME"), "nextcloud", ".dwm_nextcloud_watcher")
+    Path(status_file).touch()
+    # run dbus loop
+    loop = GLib.MainLoop()
+    loop.run()

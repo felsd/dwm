@@ -1,0 +1,8 @@
+#!/bin/bash
+win_id=$(wmctrl -l | awk '/Skype/{print $1}')
+if [ $win_id ]; then
+    unread_msgs=$(wmctrl -l | awk "/Skype/{print \$5}")
+    if [[ $unread_msgs =~ ^\[[0-9]+\]$ ]]; then
+        printf "|  "
+    fi
+fi

@@ -1,0 +1,45 @@
+#!/usr/bin/python
+import os
+import re
+import subprocess
+import sys
+
+
+def get_wininfo(app):
+    try:
+        return (
+            subprocess.check_output(
+                f"xwininfo -tree -root | grep {app}",
+                shell=True,
+                stdin=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            .decode("utf-8")
+            .split("\n")
+        )
+    except Exception:
+        return ""
+
+
+if __name__ == "__main__":
+    pressed_button = os.environ.get("BLOCK_BUTTON")
+    if pressed_button:
+        pass
+    else:
+        unread_messengers = []
+
+        slack_unread = False
+        for line in get_wininfo("Slack"):
+            if "new item" in line:
+                unread_messengers.append("")
+                break
+
+        skype_unread = False
+        for line in get_wininfo("Skype"):
+            if re.search(r"Skype \[[0-9]+\]", line):
+                unread_messengers.append("")
+                skype_unread = True
+                break
+
+        if len(unread_messengers) > 0:
+            sys.stdout.write(f"| {' '.join(unread_messengers)} ")

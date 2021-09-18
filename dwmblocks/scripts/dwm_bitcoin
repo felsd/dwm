@@ -1,0 +1,7 @@
+#!/bin/python
+import json
+import urllib.request
+
+r = urllib.request.urlopen("https://api.coindesk.com/v1/bpi/currentprice.json")
+rate = int(float(json.loads(r.read())["bpi"]["USD"]["rate"].replace(",", "")))
+print(f"BTC ${rate} | ")

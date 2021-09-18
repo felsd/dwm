@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ $BLOCK_BUTTON ]; then
+    urxvtc -T floatingwin -geometry 69x20-10+29 -background "[90]#000000" -e /bin/bash -c calendar
+    exit
+fi
+
+SEP="|"
+DATE_ICON=""
+printf "$DATE_ICON$(date +'%a, %d. %b') $SEP "

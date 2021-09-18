@@ -1,0 +1,27 @@
+#!/usr/bin/python
+import os
+import subprocess
+import sys
+from datetime import datetime
+
+CONNECTING_ICON_FA = ""
+DISCONNECTED_ICON_FA = ""
+DISCONNECTED_ICON_SJ = ""
+SYNCING_ICON_FA = ""
+SYNCING_ICON_SJ = ""
+
+if __name__ == "__main__":
+    pressed_button = os.environ.get("BLOCK_BUTTON")
+    if pressed_button:
+        subprocess.call(["nextcloud"])
+    else:
+        with open(
+            os.path.join(os.getenv("HOME"), ".dwm", "nextcloud_status.txt"), "r"
+        ) as f:
+            nextcloud_status = f.read().strip()
+        if nextcloud_status == "initial":
+            sys.stdout.write(f"{SYNCING_ICON_SJ}")
+        elif nextcloud_status == "disconnected":
+            sys.stdout.write(f"{DISCONNECTED_ICON_SJ}")
+        elif nextcloud_status == "syncing":
+            sys.stdout.write(f"{SYNCING_ICON_SJ}")

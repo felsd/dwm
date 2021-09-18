@@ -1,0 +1,38 @@
+#!/usr/bin/python
+import os
+import re
+import subprocess
+import sys
+
+SEP = "|"
+# RAM_ICON = "📉"
+RAM_ICON_SJ = ""
+RAM_ICON_BARS_SJ = ""
+RAM_ICON_EKG_SJ = ""
+RE_RAM = (
+    r"MemTotal:[\s]+(?P<total>[0-9]+).*\s"
+    r"MemFree:[\s]+(?P<free>[0-9]+).*\s"
+    r"MemAvailable:[\s]+(?P<available>[0-9]+).*\s"
+    r"Buffers:[\s]+(?P<buffers>[0-9]+).*\s"
+    r"Cached:[\s]+(?P<cached>[0-9]+)"
+)
+
+if __name__ == "__main__":
+    pressed_button = os.environ.get("BLOCK_BUTTON")
+    if pressed_button:
+        subprocess.call('urxvtc -e bash -c "glances"', shell=True)
+    else:
+        meminfo = subprocess.check_output(
+            ["cat", "/proc/meminfo"],
+            stdin=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        ).decode("utf-8")
+        m = re.search(RE_RAM, meminfo)
+        total = int(m.group("total"))
+        free = int(m.group("free"))
+        buffers = int(m.group("buffers"))
+        cached = int(m.group("cached"))
+        perc = int(100 * ((total - free) - (buffers + cached)) / total)
+        if perc > 90:
+            sys.stdout.write(f"{RAM_ICON_EKG_SJ}{perc}% {SEP} ")
+        sys.stdout.write(f"{RAM_ICON_EKG_SJ}{perc}% {SEP} ")

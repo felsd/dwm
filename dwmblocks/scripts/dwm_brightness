@@ -1,0 +1,22 @@
+#!/usr/bin/python
+import os
+import subprocess
+import sys
+
+# BRIGHT_ICON = "🔆"
+# DIM_ICON = "🔅"
+# LIGHT_ICON = "💡"
+LIGHT_ICON = ""
+BRIGHT_ICON = ""
+MONITOR_ICON_SJ = ""
+
+if __name__ == "__main__":
+    pressed_button = os.environ.get("BLOCK_BUTTON")
+    if pressed_button:
+        subprocess.call(["set_backlight"])
+    else:
+        backlight = round(
+            float(subprocess.check_output(["xbacklight"]).decode("utf-8"))
+        )
+        # sys.stdout.write(f"^c#66d9ff^{BRIGHT_ICON}^d^{backlight}% ")
+        sys.stdout.write(f"{MONITOR_ICON_SJ}{backlight}% | ")

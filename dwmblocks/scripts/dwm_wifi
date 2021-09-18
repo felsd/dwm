@@ -1,0 +1,22 @@
+#!/bin/bash
+
+SEP="|"
+WIFI_ICON_SJ=""
+WIFI_ICON_BARS_SJ="\ue048"
+WIFI_ICON_BARS_ALT_SJ=""
+WIFI_ICON_FA=""
+CROSS_MARK_ICON_SJ=""
+CROSS_MARK_ICON_FA=""
+
+if [ $BLOCK_BUTTON ]; then
+    urxvtc -e /bin/bash -c "sudo wifi-menu"
+    exit
+fi
+
+WIFI_STATUS=$(cat /sys/class/net/wlp3s0/operstate)
+if [ $WIFI_STATUS = "up" ]; then
+    WIFI_NETWORK=$(iwgetid | awk -F'"' '{ print $2 }')
+    printf "$WIFI_ICON_BARS_SJ$WIFI_NETWORK $SEP "
+else
+    printf "${CROSS_MARK_ICON_SJ}n/A $SEP "
+fi
