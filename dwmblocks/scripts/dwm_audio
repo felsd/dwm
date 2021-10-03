@@ -1,20 +1,22 @@
 #!/bin/bash
 
 if [ $BLOCK_BUTTON ]; then
-    urxvtc -T floatingwin -geometry 50x8-10+29 -background "[90]#000000" -e /bin/bash -c pulsemixer
+    urxvtc -T floatingwin -geometry 50x12-10+29 -background "[90]#000000" -e /bin/bash -c pulsemixer
     exit
+fi
+
+if [ "$(pactl get-default-sink)" = "$HEADSET" ]; then
+    ICON=""
+else
+    ICON=""
 fi
 
 SEP="|"
 AMIXER=($(amixer | awk '/Front Left: Playback/ { print $5" "$6 }'))
 LEVEL=$(echo "${AMIXER[0]}" | sed 's/\[//;s/\]//;s/%//')
 if [ "${AMIXER[1]}" = "[on]" ]; then
-    if [ $LEVEL -gt 66 ]; then
-        printf "$LEVEL%% $SEP "
-    elif [ $LEVEL -gt 33 ]; then
-        printf "$LEVEL%% $SEP "
-    elif [ $LEVEL -gt 0 ]; then
-        printf "$LEVEL%% $SEP "
+    if [ $LEVEL -gt 0 ]; then
+        printf "$ICON$LEVEL%% $SEP "
     else
         printf "$LEVEL%% $SEP ";
     fi
