@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 print_center(){
     local x
@@ -10,7 +10,7 @@ print_center(){
 }
 
 if [ $BLOCK_BUTTON ]; then
-    urxvtc -T floatingwin -geometry 50x10-10+29 -background "[90]#000000" -e /bin/bash -c timezones
+    urxvtc -T floatingwin -geometry 50x10-10+29 -background "[90]#000000" -e /bin/sh -c timezones
 fi
 
 TIME_ICON_SJ="\ue017"
