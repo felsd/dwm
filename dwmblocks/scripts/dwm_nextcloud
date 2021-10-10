@@ -2,7 +2,6 @@
 import os
 import subprocess
 import sys
-from datetime import datetime
 
 CONNECTING_ICON_FA = ""
 DISCONNECTED_ICON_FA = ""
@@ -16,7 +15,7 @@ if __name__ == "__main__":
         subprocess.call(["nextcloud"])
     else:
         with open(
-            os.path.join(os.getenv("HOME"), ".dwm", "nextcloud_status.txt"), "r"
+            os.path.join(os.getenv("HOME"), ".cache", "dwm", "nextcloud_status.txt"), "r"
         ) as f:
             nextcloud_status = f.read().strip()
         if nextcloud_status == "initial":

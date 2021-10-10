@@ -35,7 +35,7 @@ def update_state(new_state, msg=None):
         current_state = new_state
         # write current status and notify dwmblocks
         with open(
-            os.path.join(os.getenv("HOME"), ".dwm", "nextcloud_status.txt"), "w"
+            os.path.join(os.getenv("HOME"), ".cache", "dwm", "nextcloud_status.txt"), "w"
         ) as f:
             f.write(current_state)
         subprocess.call(["pkill", "-RTMIN+9", "dwmblocks"])
