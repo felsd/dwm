@@ -1,4 +1,3 @@
-dwm-autostart-20161205-bb3bd6f.diff
 dwm-attachbottom-6.2.diff
 dwm-colorbar-6.2.diff
 dwm-uselessgap-6.2.diff
