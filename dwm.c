@@ -65,7 +65,7 @@
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
 enum { SchemeNorm, SchemeSel, SchemeStatus, SchemeTagsSel, SchemeTagsNorm, SchemeInfoSel, SchemeInfoNorm }; /* color schemes */
 enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
-       NetWMFullscreen, NetActiveWindow, NetWMWindowType,
+       NetWMFullscreen, NetActiveWindow, NetWMWindowType, NetWMWindowTypeDock,
        NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
 enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
 enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
@@ -97,6 +97,7 @@ struct Client {
 	int basew, baseh, incw, inch, maxw, maxh, minw, minh;
 	int bw, oldbw;
 	unsigned int tags;
+    unsigned int isdock;
 	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
 	Client *next;
 	Client *snext;
@@ -822,11 +823,13 @@ drawbar(Monitor *m)
 	}
 
 	for (c = m->clients; c; c = c->next) {
-    if (hide_vacant_tags) {
-      occ |= c->tags == 255 ? 0 : c->tags;
-    } else {
-      occ |= c->tags;
-    }
+        if (c->isdock)
+            continue;
+        if (hide_vacant_tags) {
+          occ |= c->tags == 255 ? 0 : c->tags;
+        } else {
+          occ |= c->tags;
+        }
 		if (c->isurgent)
 			urg |= c->tags;
 	}
@@ -963,16 +966,23 @@ focusstack(const Arg *arg)
 	if (!selmon->sel)
 		return;
 	if (arg->i > 0) {
-		for (c = selmon->sel->next; c && !ISVISIBLE(c); c = c->next);
-		if (!c)
-			for (c = selmon->clients; c && !ISVISIBLE(c); c = c->next);
+		/* for (c = selmon->sel->next; c && !ISVISIBLE(c); c = c->next); */
+		/* if (!c) */
+		/* 	for (c = selmon->clients; c && !ISVISIBLE(c); c = c->next); */
+        for (c = selmon->sel->next; c && (!ISVISIBLE(c) \
+                    || c->isdock); c = c->next);
+        if (!c) {
+            for (c = selmon->clients; c && (!ISVISIBLE(c) \
+                        || c->isdock); c = c->next);
+        }
+
 	} else {
 		for (i = selmon->clients; i != selmon->sel; i = i->next)
-			if (ISVISIBLE(i))
+			if(ISVISIBLE(i) && !i->isdock)
 				c = i;
 		if (!c)
 			for (; i; i = i->next)
-				if (ISVISIBLE(i))
+				if(ISVISIBLE(i) && !i->isdock)
 					c = i;
 	}
 	if (c) {
@@ -1168,6 +1178,7 @@ manage(Window w, XWindowAttributes *wa)
 	c->h = c->oldh = wa->height;
 	c->oldbw = wa->border_width;
 
+    c->isdock = 0;
 	updatetitle(c);
 	if (XGetTransientForHint(dpy, w, &trans) && (t = wintoclient(trans))) {
 		c->mon = t->mon;
@@ -1213,6 +1224,7 @@ manage(Window w, XWindowAttributes *wa)
 	if (c->mon == selmon)
 		unfocus(selmon->sel, 0);
 	c->mon->sel = c;
+    updatewindowtype(c);
 	arrange(c->mon);
 	XMapWindow(dpy, c->win);
 	focus(NULL);
@@ -1337,7 +1349,7 @@ movemouse(const Arg *arg)
 Client *
 nexttiled(Client *c)
 {
-	for (; c && (c->isfloating || !ISVISIBLE(c)); c = c->next);
+	for(; c && (c->isfloating || !ISVISIBLE(c) || c->isdock); c = c->next);
 	return c;
 }
 
@@ -1783,6 +1795,8 @@ setup(void)
 	netatom[NetWMState] = XInternAtom(dpy, "_NET_WM_STATE", False);
 	netatom[NetWMCheck] = XInternAtom(dpy, "_NET_SUPPORTING_WM_CHECK", False);
 	netatom[NetWMFullscreen] = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
+    netatom[NetWMWindowType] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
+    netatom[NetWMWindowTypeDock] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DOCK", False);
 	netatom[NetWMWindowType] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
 	netatom[NetWMWindowTypeDialog] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DIALOG", False);
 	netatom[NetClientList] = XInternAtom(dpy, "_NET_CLIENT_LIST", False);
@@ -2077,6 +2091,8 @@ unmanage(Client *c, int destroyed)
 
 	detach(c);
 	detachstack(c);
+    if (c->isdock)
+        updatebarpos(m);
 	if (!destroyed) {
 		wc.border_width = c->oldbw;
 		XGrabServer(dpy); /* avoid race conditions */
@@ -2141,6 +2157,75 @@ updatebarpos(Monitor *m)
 		m->wy = m->topbar ? m->wy + bh : m->wy;
 	} else
 		m->by = -bh;
+
+    updatedocks(m);
+}
+
+void
+updatedocks(Monitor *m) {
+	Client *c;
+
+	m->wx = m->mx;
+	m->ww = m->mw;
+
+	for(c = m->clients; c; c = c->next) {
+		if(!c->isdock)
+			continue;
+
+		/* Decide about where to position the dock. */
+		if(c->isdock == 1) {
+			if(c->w / c->h >= 1) {
+				/* horizontal */
+				if(c->y < m->mh / 2) {
+					/* top */
+					c->isdock = 2;
+				}
+				else {
+					/* bottom */
+					c->isdock = 3;
+				}
+			}
+			else {
+				/* vertical */
+				if(c->x < m->mw / 2) {
+					/* left */
+					c->isdock = 4;
+				}
+				else {
+					/* right */
+					c->isdock = 5;
+				}
+			}
+		}
+
+		switch(c->isdock) {
+		case 2:
+			/* top */
+			resize(c, m->wx, m->wy, m->ww, c->h, True);
+			m->wy += c->h;
+			m->wh -= c->h;
+			break;
+		default:
+		case 3:
+			/* bottom */
+			resize(c, m->wx, m->wy + m->wh - c->h, m->ww, \
+					c->h, True);
+			m->wh -= c->h;
+			break;
+		case 4:
+			/* left */
+			resize(c, m->wx, m->wy, c->w, m->wh, True);
+			m->wx += c->w;
+			m->ww -= c->w;
+			break;
+		case 5:
+			/* right */
+			resize(c, m->wx + m->ww - c->w, m->wy, c->w, \
+					m->wh, True);
+			m->ww -= c->w;
+			break;
+		}
+	}
 }
 
 void
@@ -2229,13 +2314,14 @@ updategeom(void)
 			dirty = 1;
 			mons->mw = mons->ww = sw;
 			mons->mh = mons->wh = sh;
-			updatebarpos(mons);
 		}
 	}
 	if (dirty) {
 		selmon = mons;
 		selmon = wintomon(root);
 	}
+
+	updatebarpos(mons);
 	return dirty;
 }
 
@@ -2309,6 +2395,36 @@ updatestatus(void)
 }
 
 void
+updatewindowtype(Client *c)
+{
+   	Atom state = getatomprop(c, netatom[NetWMState]);
+	Atom wtype = getatomprop(c, netatom[NetWMWindowType]);
+    Atom real;
+	/* Atom wtype, real; */
+	int format;
+	unsigned long n, extra;
+	unsigned char *p = NULL;
+
+	if (state == netatom[NetWMFullscreen])
+		setfullscreen(c, 1);
+	if (wtype == netatom[NetWMWindowTypeDialog])
+		c->isfloating = 1;
+	if(XGetWindowProperty(dpy, c->win, netatom[NetWMWindowType], 0L,
+				sizeof(Atom), False, XA_ATOM, &real, &format,
+				&n, &extra, (unsigned char **)&p) == Success
+			&& p) {
+		wtype = *(Atom *)p;
+		XFree(p);
+
+		if(wtype == netatom[NetWMWindowTypeDock]) {
+			c->isdock = 1;
+			c->tags = 0xFFFFFFFF;
+			updatebarpos(c->mon);
+		}
+	}
+}
+
+void
 updatetitle(Client *c)
 {
 	if (!gettextprop(c->win, netatom[NetWMName], c->name, sizeof c->name))
@@ -2317,17 +2433,17 @@ updatetitle(Client *c)
 		strcpy(c->name, broken);
 }
 
-void
-updatewindowtype(Client *c)
-{
-	Atom state = getatomprop(c, netatom[NetWMState]);
-	Atom wtype = getatomprop(c, netatom[NetWMWindowType]);
-
-	if (state == netatom[NetWMFullscreen])
-		setfullscreen(c, 1);
-	if (wtype == netatom[NetWMWindowTypeDialog])
-		c->isfloating = 1;
-}
+/* void */
+/* updatewindowtype(Client *c) */
+/* { */
+/* 	Atom state = getatomprop(c, netatom[NetWMState]); */
+/* 	Atom wtype = getatomprop(c, netatom[NetWMWindowType]); */
+/*  */
+/* 	if (state == netatom[NetWMFullscreen]) */
+/* 		setfullscreen(c, 1); */
+/* 	if (wtype == netatom[NetWMWindowTypeDialog]) */
+/* 		c->isfloating = 1; */
+/* } */
 
 void
 updatewmhints(Client *c)

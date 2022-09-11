@@ -10,3 +10,4 @@ dwm-hide_vacant_tags-6.2.diff
 dwm-push_no_master-6.2.diff
 dwm-focusonnetactive-6.2.diff
 dwm-scratchpads-20200414-728d397b.diff
+https://lists.suckless.org/dev/att-9466/dwm-add-docks.patch
