@@ -10,6 +10,7 @@ static const Block blocks[] = {
 	{"",	    "dwm_bitcoin",   900,                   8},
 	{"",	    "dwm_date",       10,                   6},
 	{"",	    "dwm_time",       0,                    7},
+	{"",	    "dwm_osk",        0,                    11},
 	// {"",	    "dwm_skype",      60,                   8},
 	// {"",	    "dwm_slack",      60,                   10},
 };

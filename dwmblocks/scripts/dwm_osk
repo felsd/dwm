@@ -1,0 +1,17 @@
+#!/bin/sh
+
+if [ $BLOCK_BUTTON ]; then
+    PID=`pidof svkbd-en`
+    if [[ -z $PID ]]; then
+        svkbd-en -d &
+    else
+        pkill -f svkbd-en
+    fi
+fi
+
+if [[ ! -z `udevadm info --export-db | grep TOUCHSCREEN` ]]; then
+    SEP="|"
+    KB_ICON=""
+    printf "$SEP $KB_ICON"
+    printf "Keyboard "
+fi
