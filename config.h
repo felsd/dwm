@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 4;        /* border pixel of windows */
+static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int gappx     = 6;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int minwsz    = 20;       /* Minimal heigt of a client for smfact */
@@ -64,6 +64,7 @@ static const Rule rules[] = {
     { "Gimp",          NULL,        NULL,                0,             1,           -1 },
     { "Firefox",       NULL,        NULL,                1 << 8,        0,           -1 },
     { NULL,            NULL,        "floatingwin",       0,             1,           -1 },
+    // { NULL,            NULL,        "svkbd",             0,             1,           -1 },
     { "galculator",    NULL,        NULL,                0,           	1,           -1 },
 	  { NULL,				     NULL,	      "spterm",		         SPTAG(0),			1,		    	 -1 },
 	  { NULL,		         NULL,	      "spfm",		           SPTAG(1),			1,			     -1 },
